@@ -2,23 +2,37 @@ package es.upm.grise.profundizacion.file;
 
 import java.util.ArrayList;
 import java.util.List;
+import es.upm.grise.profundizacion.file.InvalidContentException;
+import es.upm.grise.profundizacion.file.FileUtils;
 
 public class File {
 
     private FileType type;
     private List<Character> content;
+	private FileUtils util;
 
 	/*
 	 * Constructor
 	 */
     public File() {
-        
+        content = new ArrayList<>();
     }
 
 	/*
 	 * Method to code / test
 	 */
-    public void addProperty(char[] content) {
+    public void addProperty(char[] newcontent) {
+		if(newcontent == null){
+			throw new InvalidContentException("");
+		}
+
+		if(this.type == FileType.IMAGE){
+			throw new WrongFileTypeException("");
+		}
+
+		for(char c: content){
+			this.content.add(c);
+		}
 
     }
 
@@ -26,9 +40,17 @@ public class File {
 	 * Method to code / test
 	 */
     public long getCRC32() {
-    	
-        return 0L;
-        
+
+		byte[] content_byte = new byte[this.content.size()];
+
+		if(content_byte.length == 0)
+			return 0L;
+
+		for(int i = 0; i < content_byte.length; i++){
+			content_byte[i] = (byte) (this.content.get(i) & 0x00FF);
+		}
+
+		return util.calculateCRC32(content_byte);
     }
     
     
