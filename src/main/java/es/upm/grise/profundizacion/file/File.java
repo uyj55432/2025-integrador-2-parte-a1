@@ -9,7 +9,6 @@ public class File {
 
     private FileType type;
     private List<Character> content;
-	private FileUtils util;
 
 	/*
 	 * Constructor
@@ -30,7 +29,7 @@ public class File {
 			throw new WrongFileTypeException("");
 		}
 
-		for(char c: content){
+		for(char c: newcontent){
 			this.content.add(c);
 		}
 
@@ -50,7 +49,7 @@ public class File {
 			content_byte[i] = (byte) (this.content.get(i) & 0x00FF);
 		}
 
-		return util.calculateCRC32(content_byte);
+		return FileUtils.calculateCRC32(content_byte);
     }
     
     
